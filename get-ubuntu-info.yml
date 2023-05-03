@@ -1,0 +1,15 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Display CPU usage
+      debug:
+        var: ansible_processor_vcpus
+    - name: Display memory usage
+      debug:
+        var: ansible_memtotal_mb
+    - name: Display uptime
+      debug:
+        var: ansible_uptime_seconds
+

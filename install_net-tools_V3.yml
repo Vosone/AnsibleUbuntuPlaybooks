@@ -1,0 +1,18 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install net-tools package
+    apt:
+      name: net-tools
+      state: latest
+  
+  - name: install unzip
+    package:
+      name: unzip
+
+  - name : update repository index
+    apt:
+      update_cache: yes
