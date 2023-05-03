@@ -1,0 +1,65 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    mysql_root_password: "root_password_here"
+    wordpress_db_name: "wordpress"
+    wordpress_db_user: "wordpress_user"
+    wordpress_db_password: "wordpress_password"
+  tasks:
+  - name: Update apt cache
+    apt: update_cache=yes cache_valid_time=3600
+  - name: Install required packages
+    apt: name={{ item }} state=present
+    with_items:
+      - apache2
+      - mysql-server
+      - php
+      - php-mysql
+      - libapache2-mod-php
+      - php-curl
+      - php-gd
+      - php-mbstring
+      - php-xml
+      - unzip
+  - name: Configure MySQL root password
+    mysql_user:
+      name: root
+      password: "{{ mysql_root_password }}"
+  - name: Create WordPress database
+    mysql_db:
+      name: "{{ wordpress_db_name }}"
+      state: present
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+  - name: Create WordPress database user
+    mysql_user:
+      name: "{{ wordpress_db_user }}"
+      password: "{{ wordpress_db_password }}"
+      priv: "{{ wordpress_db_name }}.*:ALL"
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+  - name: Download WordPress
+    get_url:
+      url: "https://wordpress.org/latest.zip"
+      dest: "/tmp/wordpress.zip"
+  - name: Extract WordPress
+    unarchive:
+      src: "/tmp/wordpress.zip"
+      dest: "/var/www/html"
+      remote_src: yes
+      owner: www-data
+      group: www-data
+      mode: 0755
+      creates: "/var/www/html/wordpress"
+  - name: Configure WordPress
+    template:
+      src: "wp-config.php.j2"
+      dest: "/var/www/html/wordpress/wp-config.php"
+      owner: www-data
+      group: www-data
+      mode: 0600
+  - name: Restart Apache
+    service:
+      name: apache2
+      state: restarted
