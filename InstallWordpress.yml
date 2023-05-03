@@ -2,7 +2,7 @@
 - hosts: all
   become: yes
   vars:
-    mysql_root_password: "root_password_here"
+    mysql_root_password: "SchnuggiBubbiDada134!$HuckaBuckahoe"
     wordpress_db_name: "wordpress"
     wordpress_db_user: "wordpress_user"
     wordpress_db_password: "wordpress_password"
