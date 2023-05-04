@@ -1,0 +1,102 @@
+---
+- name: Install WordPress on Ubuntu 22.04
+  hosts: all
+  become: yes
+
+  vars:
+    db_name: my_wordpress_db
+    db_user: wordpress
+    db_password: SuperDupperHotSQL1324pasthut88$!!1241234f
+    wp_user: admin
+    wp_password: Sauber88$
+    wp_email: it@cryptpost.ch
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - nginx
+          - mysql-server
+          - php-fpm
+          - php-mysql
+          - php-mbstring
+        state: latest
+
+    - name: Create MySQL database and user
+      mysql_db:
+        name: "{{ db_name }}"
+        state: present
+      become_user: root
+
+    - name: Create MySQL user with privileges
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+      become_user: root
+
+    - name: Download and extract WordPress
+      get_url:
+        url: https://wordpress.org/latest.tar.gz
+        dest: /tmp/wordpress.tar.gz
+      register: wordpress_archive
+
+    - name: Extract WordPress archive
+      unarchive:
+        src: "{{ wordpress_archive.dest }}"
+        dest: /var/www/html
+        copy: no
+
+    - name: Configure WordPress
+      template:
+        src: templates/wp-config.php.j2
+        dest: /var/www/html/wordpress/wp-config.php
+      become_user: www-data
+
+    - name: Create Nginx virtual host
+      template:
+        src: templates/nginx-wordpress.conf.j2
+        dest: /etc/nginx/sites-available/wordpress
+      notify:
+        - restart nginx
+
+    - name: Enable Nginx virtual host
+      file:
+        src: /etc/nginx/sites-available/wordpress
+        dest: /etc/nginx/sites-enabled/wordpress
+        state: link
+      notify:
+        - restart nginx
+
+    - name: Set WordPress file and folder permissions
+      file:
+        path: "/var/www/html/wordpress/{{ item }}"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+        mode: '0755'
+      with_items:
+        - wp-content/plugins
+        - wp-content/themes
+        - wp-content/uploads
+
+    - name: Create WordPress admin user
+      wordpress_user:
+        name: "{{ wp_user }}"
+        password: "{{ wp_password }}"
+        email: "{{ wp_email }}"
+        url: "http://localhost/wordpress"
+      become_user: www-data
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
