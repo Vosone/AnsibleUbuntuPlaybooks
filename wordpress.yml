@@ -15,6 +15,7 @@
     - name: Update apt cache
       apt:
         update_cache: yes
+      become_user: root
 
     - name: Install required packages
       apt:
