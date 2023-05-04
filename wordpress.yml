@@ -25,6 +25,10 @@
           - php-fpm
           - php-mysql
           - php-mbstring
+          - mysql-client
+          - pyhton3-dev
+          - libmysqlclient-dev
+          - python3-mysqldb
         state: latest
       become_user: root
 
