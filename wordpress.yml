@@ -22,11 +22,6 @@
         name:
           - nginx
           - mysql-server
-          - php-fpm
-          - php-mysql
-          - php-mbstring
-          - mysql-client
-          - python-mysqldb
         state: latest
       become_user: root
 
