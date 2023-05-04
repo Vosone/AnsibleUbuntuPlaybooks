@@ -54,7 +54,7 @@
 
     - name: Extract WordPress archive
       unarchive:
-        src: "{{ wordpress_archive.dest }}"
+        src: /tmp/wordpress.tar.gz
         dest: /var/www/html
         copy: no
 
