@@ -22,6 +22,10 @@
         name:
           - nginx
           - mysql-server
+          - pythen-dev
+          - php-fpm
+          - php-mysql
+          - php-mbstring
         state: latest
       become_user: root
 
