@@ -57,6 +57,7 @@
         src: /tmp/wordpress.tar.gz
         dest: /var/www/html
         copy: no
+      become_user: root
 
     - name: Configure WordPress
       template:
