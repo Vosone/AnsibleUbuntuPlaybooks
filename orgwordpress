@@ -86,6 +86,14 @@
         - wp-content/themes
         - wp-content/uploads
 
+    - name: Create WordPress admin user
+      wordpress_user:
+        name: "{{ wp_user }}"
+        password: "{{ wp_password }}"
+        email: "{{ wp_email }}"
+        url: "http://10.0.0.161/wordpress"
+      become_user: www-data
+
   handlers:
     - name: restart nginx
       service:
