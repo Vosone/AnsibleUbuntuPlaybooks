@@ -38,7 +38,7 @@
       become_method: sudo
 
     - name: Create MySQL user with privileges
-      mysql_user:
+      community.mysql.mysql_user:
         name: "{{ db_user }}"
         password: "{{ db_password }}"
         priv: "{{ db_name }}.*:ALL"
