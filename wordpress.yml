@@ -22,7 +22,7 @@
         name:
           - nginx
           - mysql-server
-          - pythen-dev
+          - pythen3
           - php-fpm
           - php-mysql
           - php-mbstring
