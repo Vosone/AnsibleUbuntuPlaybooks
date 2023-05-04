@@ -4,7 +4,7 @@
   become: yes
 
   vars:
-    db_name: my_wordpress_db
+    db_name: wordpress_db
     db_user: wordpress
     db_password: SuperDupperHotSQL1324pasthut88$!!1241234f
     wp_user: admin
@@ -34,6 +34,7 @@
         name: "{{ db_name }}"
         state: present
       become_user: root
+      become_method: sudo
 
     - name: Create MySQL user with privileges
       mysql_user:
