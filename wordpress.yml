@@ -91,7 +91,7 @@
         name: "{{ wp_user }}"
         password: "{{ wp_password }}"
         email: "{{ wp_email }}"
-        url: "http://localhost/wordpress"
+        url: "http://10.0.0.161/wordpress"
       become_user: www-data
 
   handlers:
