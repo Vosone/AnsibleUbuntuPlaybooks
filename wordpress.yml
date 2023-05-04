@@ -30,9 +30,10 @@
       become_user: root
 
     - name: Create MySQL database and user
-      mysql_db:
+      community.mysql.mysql_db:
         name: "{{ db_name }}"
         state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
       become_user: root
       become_method: sudo
 
