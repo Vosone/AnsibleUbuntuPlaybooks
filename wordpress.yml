@@ -113,5 +113,5 @@
       service:
         name: nginx
         state: restarted
-     become_user: root
+      become_user: root
 
