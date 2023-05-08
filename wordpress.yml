@@ -71,6 +71,7 @@
         dest: /etc/nginx/sites-available/wordpress
       notify:
         - restart nginx
+      become_user: root
 
     - name: Enable Nginx virtual host
       file:
@@ -79,6 +80,7 @@
         state: link
       notify:
         - restart nginx
+      become_user: root
 
     - name: Set WordPress file and folder permissions
       file:
