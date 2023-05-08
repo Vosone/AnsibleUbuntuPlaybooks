@@ -61,13 +61,13 @@
 
     - name: Configure WordPress
       template:
-        src: templates/wp-config.php.j2
+        src: templates/wp-config.php
         dest: /var/www/html/wordpress/wp-config.php
       become_user: www-data
 
     - name: Create Nginx virtual host
       template:
-        src: templates/nginx-wordpress.conf.j2
+        src: templates/nginx-wordpress.conf
         dest: /etc/nginx/sites-available/wordpress
       notify:
         - restart nginx
