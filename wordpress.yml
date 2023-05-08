@@ -100,15 +100,18 @@
       ansible.builtin.file:
         path: /etc/nginx/sites-available/default
         state: absent
+      become_user: root
 
     - name: remove default nginx
       ansible.builtin.file:
         path: /etc/nginx/sites-enabled/default
         state: absent
+      become_user: root
           
   handlers:
     - name: restart nginx
       service:
         name: nginx
         state: restarted
+     become_user: root
 
