@@ -63,7 +63,7 @@
       template:
         src: templates/wp-config.php
         dest: /var/www/html/wordpress/wp-config.php
-      become_user: www-data
+      become_user: root
 
     - name: Create Nginx virtual host
       template:
@@ -92,6 +92,7 @@
         - wp-content/plugins
         - wp-content/themes
         - wp-content/uploads
+      become_user: root
 
   handlers:
     - name: restart nginx
